@@ -27,6 +27,28 @@ public class Secure extends Controller {
             flash.put("error", Messages.get("Public.login.error.credentials"));
             login();
         }
+    }
 
+    public static void DirectoryTraversalError(String relativePath){
+        File file = new File(relativePath);
+        if (file.isAbsolute())
+        {
+            throw new RuntimeException("Absolute path not allowed");
+        }
+        String pathCanonical;
+        String pathAbsolute;
+        try
+        {
+            pathCanonical = file.getCanonicalPath();
+            pathAbsolute = file.getAbsolutePath();
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException("Directory traversal error", e);
+        }
+        if (! pathCanonical.equals(pathAbsolute))
+        {
+            throw new RuntimeException("Directory traversal error");
+        }
     }
 }
