@@ -91,9 +91,15 @@ public class User {
     }
 
     public static User loadUser(String username){
-        File f = new File(Constants.User.USERS_FOLDER + "/" + username);
-        if (f.exists()){
-            return new User(FileUtils.getJsonFromFile(f));
+        if(!username.isEmpty()){
+            File f = new File(Constants.User.USERS_FOLDER + "/" + username);
+            if (f.getAbsolutePath().contains("%2f")||f.getAbsolutePath().contains("//")){
+                System.out.println("mamugica");
+            }
+            else
+                if (f.exists()){
+                    return new User(FileUtils.getJsonFromFile(f));
+            }
         }
         return null;
     }
